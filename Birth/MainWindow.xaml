@@ -4,11 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Birth"
+        xmlns:model="clr-namespace:Birth.ViewModels"
         mc:Ignorable="d"
-        Title="Birth" Height="176" Width="325">
+        Title="生辰" Height="175" Width="325" MaxHeight="175">
+    <Window.DataContext>
+        <model:MainViewModel/>
+    </Window.DataContext>
     <Grid>
-        <StackPanel Margin="10">
-            <TextBlock TextAlignment="Center" FontSize="14" Margin="0 0 0 10" Text="你 18.37957722 岁了"/>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <model:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        </Grid.Resources>
+        <Grid x:Name="select_panel" Visibility="{Binding IsBirthDateSet, Converter={StaticResource InverseBooleanToVisibilityConverter}, Mode=TwoWay}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Label FontSize="16" HorizontalAlignment="Center" Content="选择你的出生日期"/>
+                <DatePicker SelectedDate="{Binding BirthDate, Mode=OneWayToSource}" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel x:Name="display_panel" Margin="10" Visibility="{Binding IsBirthDateSet, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}">
+            <TextBlock MouseLeftButtonUp="TextBlock_MouseLeftButtonUp" TextAlignment="Center" FontSize="14" Margin="0 0 0 10" Text="{Binding Age, StringFormat='你 {0:f8} 岁了'}"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -22,16 +36,16 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock TextAlignment="Center" FontSize="18" Grid.Column="0" Text="18"/>
-                <TextBlock TextAlignment="Center" FontSize="18" Grid.Column="1" Text="220"/>
-                <TextBlock TextAlignment="Center" FontSize="18" Grid.Column="2" Text="958"/>
+                <TextBlock TextAlignment="Center" FontSize="18" Grid.Column="0" Text="{Binding Year}"/>
+                <TextBlock TextAlignment="Center" FontSize="18" Grid.Column="1" Text="{Binding Month}"/>
+                <TextBlock TextAlignment="Center" FontSize="18" Grid.Column="2" Text="{Binding Week}"/>
                 <TextBlock TextAlignment="Center" Grid.Row="1" Grid.Column="0" Text="年"/>
                 <TextBlock TextAlignment="Center" Grid.Row="1" Grid.Column="1" Text="月"/>
                 <TextBlock TextAlignment="Center" Grid.Row="1" Grid.Column="2" Text="周"/>
 
-                <TextBlock TextAlignment="Center" FontSize="18" Grid.Row="3" Grid.Column="0" Text="6708"/>
-                <TextBlock TextAlignment="Center" FontSize="18" Grid.Row="3" Grid.Column="1" Text="161005"/>
-                <TextBlock TextAlignment="Center" FontSize="18" Grid.Row="3" Grid.Column="2" Text="9660305"/>
+                <TextBlock TextAlignment="Center" FontSize="18" Grid.Row="3" Grid.Column="0" Text="{Binding Day}"/>
+                <TextBlock TextAlignment="Center" FontSize="18" Grid.Row="3" Grid.Column="1" Text="{Binding Hour}"/>
+                <TextBlock TextAlignment="Center" FontSize="18" Grid.Row="3" Grid.Column="2" Text="{Binding Minute}"/>
                 <TextBlock TextAlignment="Center" Grid.Row="4" Grid.Column="0" Text="天"/>
                 <TextBlock TextAlignment="Center" Grid.Row="4" Grid.Column="1" Text="小时"/>
                 <TextBlock TextAlignment="Center" Grid.Row="4" Grid.Column="2" Text="分钟"/>

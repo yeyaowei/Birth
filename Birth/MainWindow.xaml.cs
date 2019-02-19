@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Birth.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,21 @@ namespace Birth
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainViewModel dataContext;
         public MainWindow()
         {
             InitializeComponent();
+            dataContext = (MainViewModel)DataContext;
+        }
+
+        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            dataContext.IsBirthDateSet = true;
+        }
+
+        private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            dataContext.IsBirthDateSet = false;
         }
     }
 }
